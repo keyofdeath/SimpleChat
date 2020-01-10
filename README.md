@@ -1,26 +1,30 @@
-# Building your first Chat Application using Flask in 7 minutes
+# Simple Flask chat APP
 
-A fully functional chat application developed on socket.io with bootstrap frontend.
+Copy from [this repo](https://github.com/Samhita-alla/flask-chat-app-article)
 
-Code for the article published on medium. Corrections are welcome :)
+## Apt to install
 
-### Topics explained
+You will need the following package:
+    
+    sudo apt install python3
+    sudo apt install virtualenv
+    sudo apt install python3-pip
 
-- Why Flask?
-- About and Installing SocketIO
-- Writing Flask view
-- Flask Socket calls and Message Handling
-- Integrating SocketJS in Flask Templates 
+## Python env preparation
 
-To run the server
+Prepare your virtualenv:
 
-    pip install -r "requirements.txt"
-    python main.py
+    virtualenv -p python3 venv
+    . venv/bin/activate
 
-Published on Medium - 
+install all requirements
 
-https://codeburst.io/building-your-first-chat-application-using-flask-in-7-minutes-f98de4adfa5d
+    pip install -r requirements.txt
 
+If you want to exit your virtualenv:
 
-This article is authored by [Samhita Alla](https://github.com/samhita-alla) and [Vihar Kurama](https://github.com/vihar)
+    deactivate
 
+## Run app
+
+    python app.py
