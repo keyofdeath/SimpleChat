@@ -1,6 +1,5 @@
-# Simple Flask chat APP
+# Simple SSL/TLS client certificate verification 
 
-Copy from [this repo](https://github.com/Samhita-alla/flask-chat-app-article)
 
 ## Apt to install
 
@@ -17,14 +16,18 @@ Prepare your virtualenv:
     virtualenv -p python3 venv
     . venv/bin/activate
 
-install all requirements
-
-    pip install -r requirements.txt
-
 If you want to exit your virtualenv:
 
     deactivate
 
 ## Run app
 
-    python app.py
+Create server certificate:
+
+    openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout server.key -out server.crt
+
+Make sure to enter ‘example.com’ for the Common Name.
+
+Then generate a client certificate:
+
+    openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout client.key -out client.crt
