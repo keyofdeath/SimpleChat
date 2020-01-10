@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
-import os
+
 import logging.handlers
+import os
 import socket
-from socket import AF_INET, SOCK_STREAM, SO_REUSEADDR, SOL_SOCKET, SHUT_RDWR
 import ssl
 
 PYTHON_LOGGER = logging.getLogger(__name__)
@@ -24,15 +24,24 @@ PYTHON_LOGGER.setLevel(logging.DEBUG)
 # Absolute path to the folder location of this python file
 FOLDER_ABSOLUTE_PATH = os.path.normpath(os.path.dirname(os.path.abspath(__file__)))
 
+# Address of the server
 listen_addr = '127.0.0.1'
+# Port of the server
 listen_port = 8082
+# The Server certificate
 server_cert = 'server.crt'
+# The Server RSA key
 server_key = 'server.key'
+# The client certificate
 client_certs = 'client.crt'
 
+# Load a context to do an auth with the client certificate
 context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+# To accept a connection you will need an certificate
 context.verify_mode = ssl.CERT_REQUIRED
+# Load the server certificate
 context.load_cert_chain(certfile=server_cert, keyfile=server_key)
+# Load all the clients certificate the can connect to the app
 context.load_verify_locations(cafile=client_certs)
 
 bindsocket = socket.socket()
@@ -40,11 +49,11 @@ bindsocket.bind((listen_addr, listen_port))
 bindsocket.listen(5)
 
 while True:
-    print("Waiting for client")
+    PYTHON_LOGGER.info("Waiting for client")
     newsocket, fromaddr = bindsocket.accept()
-    print("Client connected: {}:{}".format(fromaddr[0], fromaddr[1]))
+    PYTHON_LOGGER.info("Client connected: {}:{}".format(fromaddr[0], fromaddr[1]))
     conn = context.wrap_socket(newsocket, server_side=True)
-    print("SSL established. Peer: {}".format(conn.getpeercert()))
+    PYTHON_LOGGER.info("SSL established. Peer: {}".format(conn.getpeercert()))
     buf = b''  # Buffer to hold received client data
     try:
         while True:
@@ -54,9 +63,9 @@ while True:
                 buf += data
             else:
                 # No more data from client. Show buffer and close connection.
-                print("Received:", buf)
+                PYTHON_LOGGER.info("Received from client: {}".format(buf))
                 break
     finally:
-        print("Closing connection")
+        PYTHON_LOGGER.info("Closing connection")
         conn.shutdown(socket.SHUT_RDWR)
         conn.close()

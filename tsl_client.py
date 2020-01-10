@@ -24,21 +24,30 @@ PYTHON_LOGGER.setLevel(logging.DEBUG)
 # Absolute path to the folder location of this python file
 FOLDER_ABSOLUTE_PATH = os.path.normpath(os.path.dirname(os.path.abspath(__file__)))
 
+# Address of the server
 host_addr = '127.0.0.1'
+# Port of the server
 host_port = 8082
+# Host name of the server
 server_sni_hostname = 'example.com'
+# The Server certificate
 server_cert = 'server.crt'
+# The client certificate
 client_cert = 'client.crt'
+# The RSA key of the client
 client_key = 'client.key'
 
+# Load a context to do an auth with the server certificate
 context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH, cafile=server_cert)
+# Load the client certification
 context.load_cert_chain(certfile=client_cert, keyfile=client_key)
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 conn = context.wrap_socket(s, server_side=False, server_hostname=server_sni_hostname)
 conn.connect((host_addr, host_port))
-print("SSL established. Peer: {}".format(conn.getpeercert()))
-print("Sending: 'Hello, world!")
+# Disp the server certificate
+PYTHON_LOGGER.info("SSL established. Peer: {}".format(conn.getpeercert()))
+PYTHON_LOGGER.info("Sending: 'Hello, world!")
 conn.send(b"Hello, world!")
-print("Closing connection")
+PYTHON_LOGGER.info("Closing connection")
 conn.close()
