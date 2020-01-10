@@ -36,7 +36,7 @@ def sessions():
 
 
 def message_received(methods=['GET', 'POST']):
-    print('message was received!!!')
+    PYTHON_LOGGER.info('message was received')
 
 
 @socketio.on('message_event')
