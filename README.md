@@ -31,3 +31,11 @@ Make sure to enter ‘example.com’ for the Common Name.
 Then generate a client certificate:
 
     openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout client.key -out client.crt
+
+Then run the server python script
+
+    python tsl_server.py
+
+And the client
+
+    python tsl_client.py
